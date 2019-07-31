@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script th:src="@{public/js/jquery-3.4.1.min.js}"></script>
+    <link th:href="@{public/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+    <script th:src="@{public/js/bootstrap.min.js}"></script>
+    <link th:href="@{public/css/style.css}" rel="stylesheet" media="screen"/>
+</head>
+<body>
+    <div class="container main-container">
+        <div class="login-form-container">
+            <div class="login-form-div">
+                <div class="logo">LOGO<span class="blue-text">TYPE</span></div>
+                <div class="title">Sign Up</div>
+                <div th:if="${param.error}" class="error">User already exists.</div>
+                <form th:action="@{/registration}" method="post">
+                    <div>
+                        <input type="email" class="form-control input-required" name="username" placeholder="Email"
+                               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
+                    </div>
+                    <div>
+                        <input type="password" class="form-control input-required" name="password"
+                               placeholder="Password" required/>
+                    </div>
+                    <div>
+                        <input type="text" class="form-control" name="firstName"
+                               placeholder="First Name" />
+                    </div>
+                    <div>
+                        <input type="text" class="form-control" name="lastName"
+                               placeholder="Last Name" />
+                    </div>
+                    <div>
+                        <input type="text" class="form-control" name="phoneNumber"
+                               placeholder="Phone Number" />
+                    </div>
+                    <div>
+                        <input type="submit" value="SIGN UP" class="btn btn-primary login-form-submit-button">
+                    </div>
+                </form>
+                <div class="text-center">
+                    Already have account? <a href="/login">Log In</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

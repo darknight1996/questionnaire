@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script th:src="@{public/js/jquery-3.4.1.min.js}"></script>
+    <link th:href="@{public/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+    <script th:src="@{public/js/bootstrap.min.js}"></script>
+    <link th:href="@{public/css/style.css}" rel="stylesheet" media="screen"/>
+</head>
+<body>
+    <div class="container main-container">
+        <div class="login-form-container">
+            <div class="login-form-div">
+                <div class="logo">LOGO<span class="blue-text">TYPE</span></div>
+                <div class="title">Log In</div>
+                <div th:if="${param.error}" class="error">Invalid username and password.</div>
+                <div th:if="${param.logout}" class="error">You have been logged out.</div>
+                <form th:action="@{/login}" method="post">
+                    <div>
+                        <input type="email" class="form-control" name="username" placeholder="Email"
+                               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
+                    </div>
+                    <div>
+                        <input type="password" class="form-control" name="password"
+                               placeholder="Password" required/>
+                    </div>
+                    <div>
+                        <input type="submit" value="LOG IN" class="btn btn-primary login-form-submit-button">
+                    </div>
+                    <div class="custom-control custom-checkbox" style="padding: 0 0 0 1.5rem;">
+                        <input type="checkbox" class="custom-control-input" name="remember-me" id="rememberMe">
+                        <label class="custom-control-label" for="rememberMe"><span>Remember me</span></label>
+                    </div>
+                </form>
+                <div class="text-center">
+                    Don't have account? <a href="/registration">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

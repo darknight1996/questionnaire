@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script th:src="@{public/js/jquery-3.4.1.min.js}"></script>
+    <link th:href="@{public/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+    <script th:src="@{public/js/bootstrap.min.js}"></script>
+    <link th:href="@{public/css/style.css}" rel="stylesheet" media="screen"/>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container">
+        <div class="logo">LOGO<span class="blue-text">TYPE</span></div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="navbarNavDropdown" class="navbar-collapse collapse">
+            <ul class="navbar-nav mr-auto">
+            </ul>
+            <ul class="navbar-nav">
+                <th:block th:if="${user != null}">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            [[${user.firstName}]] [[${user.lastName}]]
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="/profile">Edit Profile</a>
+                            <a class="dropdown-item" href="/password">Change Password</a>
+                            <a class="dropdown-item" href="/logout" >Log Out</a>
+                        </div>
+                    </li>
+                </th:block>
+                <th:block th:if="${user == null}">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Log In</a>
+                    </li>
+                </th:block>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container main-container">
+    <div class="login-form-container">
+        <div class="login-form-div">
+
+            <form id="responseForm" method="POST" action="/">
+                <div th:each="field: ${fields}">
+                    <th:block th:if="${field.type == T(com.example.demo.models.FieldType).SINGLE_LINE_TEXT}">
+                        <p th:classappend="${field.required} ? label-required : null">[[${field.label}]]</p>
+                        <input type="text" class="form-control form-value" th:fieldId="${field.id}" th:required="${field.required}"/>
+                    </th:block>
+                    <th:block th:if="${field.type == T(com.example.demo.models.FieldType).MULTI_LINE_TEXT}">
+                        <p th:classappend="${field.required} ? label-required : null">[[${field.label}]]</p>
+                        <input type="textArea" class="form-control form-value" th:fieldId="${field.id}" th:required="${field.required}"/>
+                    </th:block>
+                    <th:block th:if="${field.type == T(com.example.demo.models.FieldType).RADIO_BUTTON}">
+                        <p th:classappend="${field.required} ? label-required : null">
+                            [[${field.label}]]
+                        </p>
+                        <div class="form-value" radio th:fieldId="${field.id}">
+                            <div th:each="option: ${field.options}" class="custom-control custom-radio"
+                                    style="padding: 0 0 0 1.5rem;">
+                                <input th:label="${option}" type="radio" class="custom-control-input" th:id="${field.id + '_' + option}"
+                                       th:name="${'radioGroup_' + field.id}" th:required="${field.required}">
+                                <label class="custom-control-label" th:for="${field.id + '_' + option}">[[${option}]]</label>
+                            </div>
+                        </div>
+                    </th:block>
+                    </th:block>
+                    <th:block th:if="${field.type == T(com.example.demo.models.FieldType).CHECKBOX}">
+                        <div class="custom-control custom-checkbox" style="padding: 0 0 0 1.5rem;">
+                            <input type="checkbox" class="custom-control-input form-value" th:fieldId="${field.id}"
+                                   th:name="${'checkbox_' + field.id}" th:id="${'checkbox_' + field.id}">
+                            <label class="custom-control-label" th:for="${'checkbox_' + field.id}"><span>[[${field.label}]]</span></label>
+                        </div>
+                    </th:block>
+                    <th:block th:if="${field.type == T(com.example.demo.models.FieldType).COMBOBOX}">
+                        <p th:classappend="${field.required} ? label-required : null">[[${field.label}]]</p>
+                        <select class="form-control form-value" id="fieldTypeSelect" type="select"
+                                th:required="${field.required}" th:fieldId="${field.id}">
+                            <option th:each="selectOption : ${field.options}"
+                                    th:value="${selectOption}"
+                                    th:text="${selectOption}">
+                            </option>
+                        </select>
+                    </th:block>
+                    <th:block th:if="${field.type == T(com.example.demo.models.FieldType).DATE}">
+                        <p th:classappend="${field.required} ? label-required : null">[[${field.label}]]</p>
+                        <input type="date" class="form-control form-value" th:fieldId="${field.id}"/>
+                    </th:block>
+                </div>
+                <div>
+                    <input type="submit" value="SUBMIT" class="btn btn-primary" />
+                </div>
+
+            </form>
+
+            <form action="/response" method="post" id="mapForm">
+                <input style="display: none;" type="text" name="map" id="mapInput"/>
+            </form>
+
+        </div>
+    </div>
+</div>
+    <script>
+        $(document).ready(function() {
+            $("#responseForm").submit(function(e){
+                e.preventDefault();
+                map = new Map();
+                $(".form-value").each(function (index, element) {
+                    var key = $(element)[0].getAttribute("fieldId");
+                    var value;
+                    if ($(element)[0].hasAttribute("radio")) {
+                        $(element).find("div").each(function (index, elementDiv) {
+                            var inputField = $(elementDiv).find("input");
+                            if (inputField[0].checked == true) {
+                                value = inputField[0].getAttribute("label");
+                            }
+                        });
+                    } else {
+                        if ($(element)[0].getAttribute("type") == "checkbox") {
+                            value = $(element).is(":checked");
+                        } else if ($(element)[0].getAttribute("type") == "select") {
+                            value = $(element).find(":selected").text();
+                        }
+                        else {
+                            value = $(element).val();
+                        }
+
+                    }
+                    map[key] = value;
+                    console.log(key + " " + value);
+                });
+
+                $("#mapInput").val(JSON.stringify(map));
+                $("#mapForm").submit();
+
+            });
+        });
+
+    </script>
+</body>
+</html>
