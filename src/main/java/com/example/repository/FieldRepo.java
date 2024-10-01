@@ -1,6 +1,6 @@
-package com.example.demo.repositories;
+package com.example.repository;
 
-import com.example.demo.models.Field;
+import com.example.models.Field;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

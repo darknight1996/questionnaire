@@ -1,7 +1,7 @@
-package com.example.demo.services.impl;
+package com.example.service.impl;
 
-import com.example.demo.models.User;
-import com.example.demo.services.MailService;
+import com.example.models.User;
+import com.example.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.SimpleMailMessage;

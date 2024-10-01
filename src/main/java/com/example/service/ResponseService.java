@@ -1,6 +1,6 @@
-package com.example.demo.services;
+package com.example.service;
 
-import com.example.demo.models.Response;
+import com.example.models.Response;
 
 import java.util.List;
 import java.util.Map;

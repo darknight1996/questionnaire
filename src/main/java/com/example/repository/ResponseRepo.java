@@ -1,6 +1,6 @@
-package com.example.demo.repositories;
+package com.example.repository;
 
-import com.example.demo.models.Response;
+import com.example.models.Response;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ResponseRepo extends JpaRepository<Response, Long> {

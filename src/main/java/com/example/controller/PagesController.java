@@ -1,11 +1,11 @@
-package com.example.demo.controllers;
+package com.example.controller;
 
-import com.example.demo.models.Field;
-import com.example.demo.models.Response;
-import com.example.demo.models.User;
-import com.example.demo.services.FieldService;
-import com.example.demo.services.ResponseService;
-import com.example.demo.services.UserService;
+import com.example.models.Field;
+import com.example.models.Response;
+import com.example.models.User;
+import com.example.service.FieldService;
+import com.example.service.ResponseService;
+import com.example.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

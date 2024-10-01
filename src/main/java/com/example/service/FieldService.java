@@ -1,7 +1,7 @@
-package com.example.demo.services;
+package com.example.service;
 
-import com.example.demo.models.Field;
-import com.example.demo.models.FieldType;
+import com.example.models.Field;
+import com.example.models.FieldType;
 
 import java.util.List;
 

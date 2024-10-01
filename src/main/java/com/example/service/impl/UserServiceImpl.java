@@ -1,10 +1,10 @@
-package com.example.demo.services.impl;
+package com.example.service.impl;
 
-import com.example.demo.models.Role;
-import com.example.demo.models.User;
-import com.example.demo.repositories.UserRepo;
-import com.example.demo.services.MailService;
-import com.example.demo.services.UserService;
+import com.example.models.Role;
+import com.example.models.User;
+import com.example.repository.UserRepo;
+import com.example.service.MailService;
+import com.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

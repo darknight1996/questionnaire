@@ -1,8 +1,8 @@
-package com.example.demo.services.impl;
+package com.example.service.impl;
 
-import com.example.demo.models.Response;
-import com.example.demo.repositories.ResponseRepo;
-import com.example.demo.services.ResponseService;
+import com.example.models.Response;
+import com.example.repository.ResponseRepo;
+import com.example.service.ResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

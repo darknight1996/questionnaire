@@ -46,15 +46,15 @@
 
             <form id="responseForm" method="POST" action="/">
                 <div th:each="field: ${fields}">
-                    <th:block th:if="${field.type == T(com.example.demo.models.FieldType).SINGLE_LINE_TEXT}">
+                    <th:block th:if="${field.type == T(com.example.models.FieldType).SINGLE_LINE_TEXT}">
                         <p th:classappend="${field.required} ? label-required : null">[[${field.label}]]</p>
                         <input type="text" class="form-control form-value" th:fieldId="${field.id}" th:required="${field.required}"/>
                     </th:block>
-                    <th:block th:if="${field.type == T(com.example.demo.models.FieldType).MULTI_LINE_TEXT}">
+                    <th:block th:if="${field.type == T(com.example.models.FieldType).MULTI_LINE_TEXT}">
                         <p th:classappend="${field.required} ? label-required : null">[[${field.label}]]</p>
                         <input type="textArea" class="form-control form-value" th:fieldId="${field.id}" th:required="${field.required}"/>
                     </th:block>
-                    <th:block th:if="${field.type == T(com.example.demo.models.FieldType).RADIO_BUTTON}">
+                    <th:block th:if="${field.type == T(com.example.models.FieldType).RADIO_BUTTON}">
                         <p th:classappend="${field.required} ? label-required : null">
                             [[${field.label}]]
                         </p>
@@ -68,14 +68,14 @@
                         </div>
                     </th:block>
                     </th:block>
-                    <th:block th:if="${field.type == T(com.example.demo.models.FieldType).CHECKBOX}">
+                    <th:block th:if="${field.type == T(com.example.models.FieldType).CHECKBOX}">
                         <div class="custom-control custom-checkbox" style="padding: 0 0 0 1.5rem;">
                             <input type="checkbox" class="custom-control-input form-value" th:fieldId="${field.id}"
                                    th:name="${'checkbox_' + field.id}" th:id="${'checkbox_' + field.id}">
                             <label class="custom-control-label" th:for="${'checkbox_' + field.id}"><span>[[${field.label}]]</span></label>
                         </div>
                     </th:block>
-                    <th:block th:if="${field.type == T(com.example.demo.models.FieldType).COMBOBOX}">
+                    <th:block th:if="${field.type == T(com.example.models.FieldType).COMBOBOX}">
                         <p th:classappend="${field.required} ? label-required : null">[[${field.label}]]</p>
                         <select class="form-control form-value" id="fieldTypeSelect" type="select"
                                 th:required="${field.required}" th:fieldId="${field.id}">
@@ -85,7 +85,7 @@
                             </option>
                         </select>
                     </th:block>
-                    <th:block th:if="${field.type == T(com.example.demo.models.FieldType).DATE}">
+                    <th:block th:if="${field.type == T(com.example.models.FieldType).DATE}">
                         <p th:classappend="${field.required} ? label-required : null">[[${field.label}]]</p>
                         <input type="date" class="form-control form-value" th:fieldId="${field.id}"/>
                     </th:block>

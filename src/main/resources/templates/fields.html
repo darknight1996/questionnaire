@@ -108,7 +108,7 @@
             <div>
                 <span class="label-required">Type</span>
                 <select class="form-control" name="type" required id="fieldTypeSelect">
-                    <option th:each="fieldType : ${T(com.example.demo.models.FieldType).values()}"
+                    <option th:each="fieldType : ${T(com.example.models.FieldType).values()}"
                             th:value="${fieldType}"
                             th:text="${fieldType.name}">
                     </option>
@@ -148,7 +148,7 @@
             <div>
                 <span class="label-required">Type</span>
                 <select class="form-control" name="type" required id="fieldTypeSelectEdit">
-                    <option th:each="fieldType : ${T(com.example.demo.models.FieldType).values()}"
+                    <option th:each="fieldType : ${T(com.example.models.FieldType).values()}"
                             th:value="${fieldType}"
                             th:text="${fieldType.name}">
                     </option>

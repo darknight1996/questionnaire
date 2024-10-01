@@ -1,9 +1,9 @@
-package com.example.demo.services.impl;
+package com.example.service.impl;
 
-import com.example.demo.models.Field;
-import com.example.demo.models.FieldType;
-import com.example.demo.repositories.FieldRepo;
-import com.example.demo.services.FieldService;
+import com.example.models.Field;
+import com.example.models.FieldType;
+import com.example.repository.FieldRepo;
+import com.example.service.FieldService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
