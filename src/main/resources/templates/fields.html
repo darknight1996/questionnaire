@@ -65,7 +65,7 @@
                 </thead>
                 <tbody>
                     <tr th:each="field: ${fields}">
-                        <td style="display: none" th:text="${field.id}"></th>
+                        <td style="display: none" th:text="${field.id}"></td>
                         <td th:text="${field.label}"></td>
                         <td th:text="${field.type.name}"></td>
                         <td th:text="${field.required}"></td>
@@ -137,7 +137,7 @@
     </div>
 
     <div id="editFieldDiv" class="fields-popup">
-        Add Field
+        Edit Field
         <span class="close" id="closeEdit">&times;</span>
         <form action="/fields/edit" method="post" id="fieldEditForm">
             <input type="text" name="id" style="display: none;" />
