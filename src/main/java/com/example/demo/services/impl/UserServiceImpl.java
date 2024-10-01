@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
         userRepo.save(user);
-        mailService.sendRegistrationNotification(user);
+        //mailService.sendRegistrationNotification(user);
         return true;
     }
 

@@ -2,15 +2,12 @@ package com.example.demo.controllers;
 
 import com.example.demo.models.Field;
 import com.example.demo.models.FieldType;
-import com.example.demo.models.Response;
 import com.example.demo.models.User;
 import com.example.demo.services.FieldService;
 import com.example.demo.services.ResponseService;
 import com.example.demo.services.UserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import net.bytebuddy.description.method.MethodDescription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
 @Controller

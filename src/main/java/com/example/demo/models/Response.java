@@ -1,6 +1,7 @@
 package com.example.demo.models;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,4 +38,5 @@ public class Response {
     public void setMap(Map<Long, String> map) {
         this.map = map;
     }
+
 }
