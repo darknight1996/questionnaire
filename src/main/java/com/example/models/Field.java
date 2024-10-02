@@ -22,12 +22,13 @@ public class Field {
     private boolean isActive;
 
     @ElementCollection
+    @Column(name = "option")
     private List<String> options;
 
     public Field() {
     }
 
-    public Field(String label, FieldType type, Boolean required, Boolean isActive) {
+    public Field(final String label, final FieldType type, final Boolean required, final Boolean isActive) {
         this.label = label;
         this.type = type;
         this.required = required;
@@ -83,8 +84,7 @@ public class Field {
     }
 
     public String getOptionsForFront() {
-        StringBuilder string = new StringBuilder();
-        options.forEach(option -> string.append(option + "\n"));
-        return string.toString();
+        return String.join("\n", options);
     }
+
 }
