@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface FieldRepo extends JpaRepository<Field, Long> {
 
-    Field findOneById(Long id);
-
     List<Field> findByOrderById();
 
     List<Field> getAllByIsActiveIsTrue();

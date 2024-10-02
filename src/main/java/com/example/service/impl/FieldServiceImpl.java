@@ -13,8 +13,11 @@ import java.util.List;
 @Service
 public class FieldServiceImpl implements FieldService {
 
-    @Autowired
-    private FieldRepo fieldRepo;
+    private final FieldRepo fieldRepo;
+
+    public FieldServiceImpl(final FieldRepo fieldRepo) {
+        this.fieldRepo = fieldRepo;
+    }
 
     @Override
     public void addField(Field field) {
@@ -37,21 +40,8 @@ public class FieldServiceImpl implements FieldService {
     }
 
     @Override
-    public void editField(Long id, String label, FieldType type, List<String> options, boolean required, boolean active) {
-        Field field = fieldRepo.findOneById(id);
-        field.setLabel(label);
-        field.setType(type);
-        if (type == FieldType.RADIO_BUTTON || type == FieldType.COMBOBOX) {
-            field.setOptions(options);
-        }
-        field.setRequired(required);
-        field.setActive(active);
+    public void editField(final Field field) {
         fieldRepo.save(field);
-    }
-
-    @Override
-    public Field getField(Long id) {
-        return fieldRepo.findOneById(id);
     }
 
     @Override

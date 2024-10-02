@@ -1,7 +1,6 @@
 package com.example.controller;
 
 import com.example.models.Field;
-import com.example.models.FieldType;
 import com.example.models.User;
 import com.example.service.FieldService;
 import com.example.service.ResponseService;
@@ -12,8 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -60,7 +59,9 @@ public class ActionsController {
 
     @PostMapping("/fields/add")
     public String addField(final Field field, final String options) {
-        field.setOptions(new ArrayList<>(Arrays.asList(options.split("\n"))));
+        final List<String> splittedOptions = splitOptions(options);
+
+        field.setOptions(splittedOptions);
 
         fieldService.addField(field);
 
@@ -68,8 +69,12 @@ public class ActionsController {
     }
 
     @PostMapping("/fields/edit")
-    public String editField(final Long id, final String label, final FieldType type, final String options, final boolean required, final boolean active) {
-        fieldService.editField(id, label, type, new ArrayList<>(Arrays.asList(options.split("\n"))), required, active);
+    public String editField(final Field field, final String options) {
+        final List<String> splittedOptions = splitOptions(options);
+
+        field.setOptions(splittedOptions);
+
+        fieldService.editField(field);
 
         return "redirect:/fields";
     }
@@ -90,6 +95,12 @@ public class ActionsController {
         responseService.addResponse(myMap);
 
         return "redirect:/";
+    }
+
+    private List<String> splitOptions(final String options) {
+        return Arrays.stream(options.split("\n"))
+                .filter(option -> !option.isBlank())
+                .toList();
     }
 
 }
