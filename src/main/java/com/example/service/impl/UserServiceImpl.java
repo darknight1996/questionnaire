@@ -5,7 +5,6 @@ import com.example.models.User;
 import com.example.repository.UserRepo;
 import com.example.service.MailService;
 import com.example.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,68 +17,81 @@ import java.util.Collections;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private MailService mailService;
+    private final MailService mailService;
 
-    @Autowired
-    private UserRepo userRepo;
+    private final UserRepo userRepo;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+
+    public UserServiceImpl(final MailService mailService, final UserRepo userRepo, final AuthenticationManager authenticationManager) {
+        this.mailService = mailService;
+        this.userRepo = userRepo;
+        this.authenticationManager = authenticationManager;
+    }
 
     public User getCurrentUser() {
         try {
-            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            UserDetails userDetails = ((UserDetails) principal);
-            User user = userRepo.findByUsername(userDetails.getUsername());
-            return user;
+            final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            final UserDetails userDetails = ((UserDetails) principal);
+
+            return userRepo.findByUsername(userDetails.getUsername());
         } catch (Exception e) {
             return null;
         }
     }
 
-    public void updateAuth(User user) {
-        Authentication request = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
-        Authentication result = authenticationManager.authenticate(request);
+    public void updateAuth(final User user) {
+        final Authentication request = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+
+        final Authentication result = authenticationManager.authenticate(request);
+
         SecurityContextHolder.getContext().setAuthentication(result);
     }
 
-    public String changePassword(String currentPassword, String newPassword1, String newPassword2) {
-        User user = getCurrentUser();
+    public String changePassword(final String currentPassword, final String newPassword1, final String newPassword2) {
+        final User user = getCurrentUser();
         if (!currentPassword.equals(user.getPassword())) {
             return "error1";
         } else if (!newPassword1.equals(newPassword2)) {
             return "error2";
         } else {
             user.setPassword(newPassword1);
+
             userRepo.save(user);
-            mailService.changePasswordNotification(user);
+
+            //mailService.changePasswordNotification(user);
+
             return "";
         }
     }
 
-    public void editUser(User user, String oldUsername) {
-        User userFromDb = userRepo.findByUsername(oldUsername);
-        userFromDb.setFirstName(user.getFirstName());
-        userFromDb.setLastName(user.getLastName());
-        userFromDb.setUsername(user.getUsername());
-        userFromDb.setPhoneNumber(user.getPhoneNumber());
-        userRepo.save(userFromDb);
-        // update user in security session
-        updateAuth(userFromDb);
+    public void editUser(final User user, final String oldUsername) {
+        final User existedUser = userRepo.findByUsername(oldUsername);
+
+        existedUser.setFirstName(user.getFirstName());
+        existedUser.setLastName(user.getLastName());
+        existedUser.setUsername(user.getUsername());
+        existedUser.setPhoneNumber(user.getPhoneNumber());
+
+        userRepo.save(existedUser);
+
+        updateAuth(existedUser);
     }
 
-    public boolean addUser(User user) {
-        // check is user exists
-        User userFromDb = userRepo.findByUsername(user.getUsername());
-        if (userFromDb != null) {
+    public boolean addUser(final User user) {
+        final User existedUser = userRepo.findByUsername(user.getUsername());
+
+        if (existedUser != null) {
             return false;
         }
-        // fill user's fields save in db and send mail notification
+
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
+
         userRepo.save(user);
+
         //mailService.sendRegistrationNotification(user);
+
         return true;
     }
 
