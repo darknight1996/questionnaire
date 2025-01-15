@@ -11,7 +11,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
-            <div class="logo">LOGO<span class="blue-text">TYPE</span></div>
+            <a href="/" class="logo-link"><div class="logo">QUESTION<span class="blue-text">NAIRE</span></div></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -58,7 +58,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="response: ${responses}">
-                        <td th:each="answer: ${response}">[[${answer}]]</th>
+                        <td th:each="answer: ${response}">[[${answer}]]</td>
                     </tr>
                     </tbody>
                 </table>

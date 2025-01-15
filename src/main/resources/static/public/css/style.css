@@ -146,3 +146,13 @@ nav {
     display: none;
 }
 
+.logo-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.logo-link:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
