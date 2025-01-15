@@ -10,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -18,79 +19,90 @@ import java.util.Collections;
 public class UserServiceImpl implements UserService {
 
     private final MailService mailService;
-
     private final UserRepo userRepo;
-
     private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(final MailService mailService, final UserRepo userRepo, final AuthenticationManager authenticationManager) {
+    public UserServiceImpl(MailService mailService, UserRepo userRepo, AuthenticationManager authenticationManager,
+                           PasswordEncoder passwordEncoder) {
         this.mailService = mailService;
         this.userRepo = userRepo;
         this.authenticationManager = authenticationManager;
+        this.passwordEncoder = passwordEncoder;
     }
 
+    @Override
     public User getCurrentUser() {
         try {
             final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            final UserDetails userDetails = ((UserDetails) principal);
 
-            return userRepo.findByUsername(userDetails.getUsername());
+            if (principal instanceof UserDetails userDetails) {
+                return userRepo.findByUsername(userDetails.getUsername());
+            }
         } catch (Exception e) {
             return null;
         }
+
+        return null;
     }
 
-    public void updateAuth(final User user) {
+    @Override
+    public void updateAuth(User user) {
         final Authentication request = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
-
         final Authentication result = authenticationManager.authenticate(request);
 
         SecurityContextHolder.getContext().setAuthentication(result);
     }
 
-    public String changePassword(final String currentPassword, final String newPassword1, final String newPassword2) {
+    @Override
+    public String changePassword(String currentPassword, String newPassword1, String newPassword2) {
         final User user = getCurrentUser();
-        if (!currentPassword.equals(user.getPassword())) {
+
+        if (user == null) {
+            return "error: user not found";
+        }
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
             return "error1";
-        } else if (!newPassword1.equals(newPassword2)) {
+        }
+        if (!newPassword1.equals(newPassword2)) {
             return "error2";
-        } else {
-            user.setPassword(newPassword1);
+        }
 
-            userRepo.save(user);
+        user.setPassword(passwordEncoder.encode(newPassword1));
+        userRepo.save(user);
 
-            //mailService.changePasswordNotification(user);
+        // mailService.changePasswordNotification(user);
 
-            return "";
+        return "success";
+    }
+
+    @Override
+    public void editUser(User user, String oldUsername) {
+        final User existingUser = userRepo.findByUsername(oldUsername);
+        if (existingUser != null) {
+            existingUser.setFirstName(user.getFirstName());
+            existingUser.setLastName(user.getLastName());
+            existingUser.setUsername(user.getUsername());
+            existingUser.setPhoneNumber(user.getPhoneNumber());
+
+            userRepo.save(existingUser);
+            updateAuth(existingUser);
         }
     }
 
-    public void editUser(final User user, final String oldUsername) {
-        final User existedUser = userRepo.findByUsername(oldUsername);
-
-        existedUser.setFirstName(user.getFirstName());
-        existedUser.setLastName(user.getLastName());
-        existedUser.setUsername(user.getUsername());
-        existedUser.setPhoneNumber(user.getPhoneNumber());
-
-        userRepo.save(existedUser);
-
-        updateAuth(existedUser);
-    }
-
-    public boolean addUser(final User user) {
-        final User existedUser = userRepo.findByUsername(user.getUsername());
-
-        if (existedUser != null) {
+    @Override
+    public boolean addUser(User user) {
+        if (userRepo.findByUsername(user.getUsername()) != null) {
             return false;
         }
 
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
 
         userRepo.save(user);
 
-        //mailService.sendRegistrationNotification(user);
+        // mailService.sendRegistrationNotification(user);
 
         return true;
     }
